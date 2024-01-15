@@ -1,3 +1,7 @@
 Website-C:\Users\Lenovo\anaconda3\python.exe "C:\Website\main.py"
 Reader-C:\Users\Lenovo\anaconda3\python.exe "C:\EazePark\Reader\Reader.py"
 Sign_Out-C:\Users\Lenovo\anaconda3\python.exe "C:\EazePark\Sign_Out\Sign_Out.py"
+
+
+
+https://drive.google.com/drive/folders/1HnpKQkPlwztM4S0qDu4Wm5HFHp_dF__Q?usp=sharing
