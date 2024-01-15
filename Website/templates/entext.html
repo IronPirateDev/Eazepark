@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry/Exit Control</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        img {
+            max-width: 45%;
+            height: auto;
+            margin: 20px 0; /* Reduced top margin */
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        input[type="text"] {
+            border: none;
+            border-radius: 200px; /* Rounded corners */
+            padding: 10px 20px;
+            font-size: 30px;
+            margin: 0px; /* No margin */
+            width: 50%; /* Same width as the button */
+        }
+
+        button {
+            background-color: #243d5e;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 200px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            margin: 30px; /* Reduced margin */
+        }
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #243d5e; /* Same color as your buttons */
+            color: #ffffff; /* Same text color as your buttons */
+            border: none;
+            border-radius: 200px; /* Same border radius as your buttons */
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px; /* Same font size as your buttons */
+            margin: 0; /* No margin */
+        }
+
+        #back-button:hover {
+            background-color: #020c18; /* Same hover color as your buttons */
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background-color: #05162c;
+                color: #ffffff; /* Set text color to white */
+                margin: 0;
+            }
+
+            .option-buttons {
+                margin-bottom: 50px; /* Reduced bottom margin */
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+                margin: 50px 0; /* Reduced top margin */
+            }
+
+            input[type="text"] {
+                width: 80%; /* Adjusted width for smaller screens */
+            }
+
+            button {
+                background-color: #243d5e;
+                color: #ffffff; /* Set text color to white */
+                border: none;
+                width: 80%;
+                border-radius: 200px;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 30px;
+                margin: 30px; /* Reduced margin */
+            }
+
+            button:hover {
+                background-color: #020c18;
+            }
+            .fade-in {
+                opacity: 0;
+                animation: fadeIn 1s ease-in-out forwards;
+            }
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <div id="status-message" style="color: green;"></div>
+    <button id="back-button" onclick="goBack()">Back</button>
+    <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    <div id="error-message" style="color: red;"></div>
+    <input type="text" id="textbox" placeholder="Enter The Access Code Here">
+    <div class="option-buttons">
+        <button onclick="sendOption('Entry')">Start Car Entry Program</button>
+        <button onclick="sendOption('Exit')">Start Car Exit Program</button>
+        <button onclick="sendOption('StpEntry')">Stop Car Entry Program</button>
+        <button onclick="sendOption('StpExit')">Stop Car Exit Program</button>
+    </div>
+
+    <script>
+        function sendOption(option) {
+            var textbox = document.getElementById('textbox');
+            var textboxValue = textbox.value;
+    
+            // Check if the access code is correct
+            if (textboxValue !== "10922") {
+                alert("Access Denied! Incorrect Access Code.");
+                return;
+            }
+    
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/process_entext_option", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        displayStatusMessage(response.message);
+                        console.log(response);
+                        // Clear the access code input field
+                        textbox.value = '';
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ option: option, textboxValue: textboxValue }));
+        }
+    
+        function displayStatusMessage(message) {
+            var statusMessageDiv = document.getElementById('status-message');
+            statusMessageDiv.innerHTML = message;
+        }
+        function goBack() {
+            window.history.back();
+        }
+    </script> 
+</body>
+</html>

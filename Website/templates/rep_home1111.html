@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Home</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px;
+        }
+
+        img {
+            max-width: 550px;
+            height: auto;
+            margin: 0px 0;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #104386;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px;
+        }
+
+        button:hover {
+            background-color: #010a17;
+        }
+
+        h1 {
+            font-size: 65px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #001025;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #3a3838;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #aaa;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        select,
+        .datepicker {
+            color: #001025;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            width: 80%;
+            margin: 10px auto;
+        }
+        @media (max-width: 768px) {        
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        img {
+            max-width: 370px;
+            height: auto;
+            margin: 0px 0; /* Reduced top margin */
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #104386;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            max-width: 400px;
+            margin: 20px; /* Reduced margin */
+        }
+
+        button:hover {
+            background-color: #010a17;
+        }
+        h1 {
+            font-size: 40px;
+            margin-top: 0%;
+            margin-bottom: 0%;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+            font-size: 0%;
+        }
+
+        .modal-content {
+            background-color: #001025;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #3a3838;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+    }
+    </style>
+</head>
+
+<body class="fade-in">
+    <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    <div class="option-buttons">
+        <h1>Generate Reports</h1>
+        <button id="monthlyButton" onclick="openModal('monthlyReportModal'); populateYears();">Monthly Report</button>
+        <button id="dailyButton" onclick="openModal('dailyReportModal')">Daily Report</button>
+        <button id="yearlyButton" onclick="openModal('yearlyReportModal'); populateYears();">Yearly Report</button>
+    </div>
+
+    <div id="monthlyReportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('monthlyReportModal')">&times;</span>
+            <label for="monthSelect">Select Month:</label>
+            <select id="monthSelect">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <label for="yearSelect">Select Year:</label>
+            <select id="yearSelect"></select>
+            <button onclick="makeMonthlyReport()">Generate Report</button>
+            <button onclick="viewMonthlyReport()">View Report</button>
+        </div>
+    </div>
+
+    <div id="dailyReportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('dailyReportModal')">&times;</span>
+            <label for="datepicker" class="datepicker">Select Date:</label>
+            <input type="date" id="datepicker" class="datepicker">
+            <button onclick="makeDailyReport()">Generate Report</button>
+            <button onclick="viewDailyReport()">View Report</button>
+        </div>
+    </div>
+
+    <div id="yearlyReportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('yearlyReportModal')">&times;</span>
+            <label for="yearSelectYearly">Select Year:</label>
+            <select id="yearSelectYearly"></select>
+            <button onclick="makeYearlyReport()">Generate Report</button>
+            <button onclick="viewYearlyReport()">View Report</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function generateReport(reportType, viewOption) {
+            var selectedDate = document.getElementById('datepicker').value;
+            var selectedMonth = document.getElementById('monthSelect').value;
+            var selectedYear = document.getElementById('yearSelect').value;
+            var selectedYearYearly = document.getElementById('yearSelectYearly').value;
+
+            fetch('/generate_report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        reportType: reportType,
+                        selectedDate: selectedDate,
+                        selectedMonth: selectedMonth,
+                        selectedYear: selectedYear,
+                        selectedYearYearly: selectedYearYearly,
+                        viewOption: viewOption
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Report details sent successfully:', data);
+                    if (viewOption === 'view-mon') {
+                        // Redirect to the monthly route with selected_month and selected_year
+                        const url = `/monthly/${selectedMonth}/${selectedYear}`;
+                        window.location.href = url;
+                    }
+                })
+                .catch(error => console.error('Error sending report details:', error));
+        }
+
+        function viewMonthlyReport() {
+            var selectedMonth = document.getElementById('monthSelect').value;
+            var selectedYear = document.getElementById('yearSelect').value;
+
+            // Build the URL for viewing the monthly report
+            const url = `/monthly/${selectedMonth}/${selectedYear}`;
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function viewDailyReport() {
+            var selectedDate = document.getElementById('datepicker').value;
+
+            console.log('Selected Date:', selectedDate);
+
+            // Format the selected date to match the desired URL format (YYYY-MM-DD)
+            var formattedDate = selectedDate.split('-').reverse().join('-');
+
+            console.log('Formatted Date:', formattedDate);
+
+            // Build the URL for viewing the daily report
+            const url = `/daily/${formattedDate}`;
+
+            console.log('Redirecting to:', url);
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function viewYearlyReport() {
+            var selectedYearYearly = document.getElementById('yearSelectYearly').value;
+
+            // Build the URL for viewing the yearly report
+            const url = `/yearly/${selectedYearYearly}`;
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function makeMonthlyReport() {
+            var selectedMonth = document.getElementById('monthSelect').value;
+            var selectedYear = document.getElementById('yearSelect').value;
+
+            // Build the URL for viewing the monthly report
+            const url = `/genmonthly/${selectedMonth}/${selectedYear}`;
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function makeDailyReport() {
+            var selectedDate = document.getElementById('datepicker').value;
+
+            console.log('Selected Date:', selectedDate);
+
+            // Format the selected date to match the desired URL format (YYYY-MM-DD)
+            var formattedDate = selectedDate.split('-').reverse().join('-');
+
+            console.log('Formatted Date:', formattedDate);
+
+            // Build the URL for viewing the daily report
+            const url = `/gendaily/${formattedDate}`;
+
+            console.log('Redirecting to:', url);
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function makeYearlyReport() {
+            var selectedYearYearly = document.getElementById('yearSelectYearly').value;
+
+            // Build the URL for viewing the yearly report
+            const url = `/genyearly/${selectedYearYearly}`;
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+        function populateYears() {
+            var currentYear = new Date().getFullYear();
+            var yearSelect = document.getElementById('yearSelect');
+            var yearSelectYearly = document.getElementById('yearSelectYearly');
+
+            for (var i = currentYear; i >= currentYear - 10; i--) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                yearSelect.add(option);
+
+                var optionYearly = document.createElement('option');
+                optionYearly.value = i;
+                optionYearly.text = i;
+                yearSelectYearly.add(optionYearly);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

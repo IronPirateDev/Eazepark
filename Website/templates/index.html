@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eazepark</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        img {
+            max-width: 60%;
+            height: auto;
+            margin: 20px 0; /* Reduced top margin */
+        }
+
+        button {
+            background-color: #243d5e;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 200px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            margin: 0px; /* Reduced margin */
+            margin-right: 5%;
+            margin-left: 5%;
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 50px 0; /* Reduced top margin */
+        }
+
+        button {
+            background-color: #243d5e;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            width: 80%;
+            border-radius: 200px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            margin: 30px; /* Reduced margin */
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+    }
+    </style>
+</head>
+<body class="fade-in"> <!-- Added fade-in class for animation -->
+    <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    <div class="option-buttons">
+        <button onclick="window.location.href='/login'">User Login</button>
+        <button onclick="sendOption('EntryExit')">Program Control</button>
+    </div>
+
+    <script>
+        function sendOption(option) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/process_option", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        window.location.href = '/entext';  // Redirect to entext.html
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({option: option}));
+        }
+        window.onbeforeunload = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);  // Make a synchronous request
+            xhr.send();
+        }
+    </script>    
+</body>
+</html>

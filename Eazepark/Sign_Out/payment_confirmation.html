@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Confirmation</title>
+    <link rel="icon" href="static/favicon.ico">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        p {
+            font-size: 18px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+        }
+        .content {
+            max-width: 30%;
+            text-align: center;
+            margin-top: 0%;
+        }
+        .images {
+            display: flex;
+            flex-direction: column;
+            max-width: 50%;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .left-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: -10px;
+            margin-left: -0%;
+        }
+        .qr-code {
+            max-width: 200%;
+            height: auto;
+            /* Add any additional styles for the QR code image container */
+        }
+        button#confirmBtn {
+            background-color: blue;
+            color: white;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="left-image">
+                <img src="static\ParkingIcon1.png" alt="Left Image">
+            </div>
+            <h1>Car Number and Charges</h1>
+            <p>Car Number: KA45NB1853</p>
+            <p>Total Charges: 20 Rs</p>
+        </div>
+        <div class="images">
+            <div class="qr-code">
+                <img src="qr.png" alt="QR Code Image">
+            </div>            
+        </div>
+    </div>
+</body>
+</html>

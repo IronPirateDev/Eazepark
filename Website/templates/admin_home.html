@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #104386;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #010a17;
+        }
+
+        h1 {
+            font-size: 65px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+                Verdana, sans-serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+                    Verdana, sans-serif;
+                text-align: center;
+                background-color: #05162c;
+                color: #ffffff;
+                /* Set text color to white */
+                margin: 0;
+            }
+
+            .option-buttons {
+                margin-bottom: 50px;
+                /* Reduced bottom margin */
+            }
+
+            img {
+                max-width: 370px;
+                height: auto;
+                margin: 0px 0;
+                /* Reduced top margin */
+                margin-bottom: 10px;
+            }
+
+            button {
+                background-color: #104386;
+                color: #ffffff;
+                /* Set text color to white */
+                border: none;
+                border-radius: 40px;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 30px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+                    Verdana, sans-serif;
+                max-width: 400px;
+                margin: 10px;
+                /* Reduced margin */
+                align-self: flex-start;
+            }
+
+            button:hover {
+                background-color: #010a17;
+            }
+
+            h1 {
+                font-size: 50px;
+                margin-top: 0%;
+                margin-bottom: 0%;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+                    Verdana, sans-serif;
+            }
+
+            .fade-in {
+                opacity: 0;
+                animation: fadeIn 1s ease-in-out forwards;
+            }
+        }
+    </style>
+</head>
+
+<body class="fade-in">
+    <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
+        <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image" style="max-width: 50%; height: auto; margin-bottom: 10px;">
+        <button onclick="goBack()" style="position: absolute; top: 10px; left: 10px;">Back</button>
+        <button onclick="logout()" style="position: absolute; top: 10px; right: 10px;">Logout</button>
+        <div class="option-buttons">
+            <h1>Welcome {{ username }}</h1>
+            <button onclick="sendOption('MDFY')">Car List Control</button>
+            <button onclick="sendOption('ARU')">User List Control</button>
+            <button onclick="sendOption('RC')">Report Control</button>
+            <button onclick="window.location.href='/vpp'">View Live Parking Data</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);
+            xhr.send();
+            window.location.href = '/login';
+        }
+
+        function sendOption(option) {
+            var selop = option;
+            console.log("Selected Option:", selop);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/process_option", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        if (selop == 'MDFY') {
+                            window.location.href = '/mdfy';
+                        } else if (selop == 'ARU') {
+                            window.location.href = '/user_mod_page';
+                        } else if (selop == 'RC') {
+                            window.location.href = '/rep_home';
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ option: option }));
+        }
+    </script>
+</body>
+
+</html>

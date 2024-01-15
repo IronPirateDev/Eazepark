@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+            font-size: 30px;
+        }
+        #error-message {
+            color: #FF0000; /* Set text color to red */
+            margin-top: 10px;
+        }
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        img {
+            max-width: 550px;
+            height: auto;
+            margin: 0px 0; /* Reduced top margin */
+            margin-bottom: 10px;
+        }
+        input {
+            background-color: #ffffff;
+            color: #000000; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px; /* Reduced margin */
+            margin-top: -10%;
+            margin-bottom: -10%;
+        }
+        button {
+            background-color: #104386;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin-top: -40%;
+            margin-bottom: -10%;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px; /* Reduced margin */
+        }
+
+        button:hover {
+            background-color: #010a17;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-top: 0%;
+            margin-bottom: 3%;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    <button onclick="goBack()" style="position: absolute; top: 10px; left: 10px;">Back</button>
+    <button onclick="logout()" style="position: absolute; top: 10px; right: 10px;">Logout</button>
+    <div class="option-buttons">
+        <h1>Password Reset for {{ username }}</h1>
+        <form id="resetForm" action="{{ url_for('user_pswd_reset') }}" method="POST" onsubmit="resetPassword(event);">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+            <br><br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <br><br>
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
+    <script>
+        function resetPassword(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            var newPassword = document.getElementById('newPassword').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+    
+            // Check if the passwords match
+            if (newPassword !== confirmPassword) {
+                alert("New and Confirm Passwords are different. Please enter the same password in both fields.");
+                
+            }
+            if (newPassword === confirmPassword) {
+                alert("Password Reset Successful Please Login With Your New Password");
+                window.location.href='/login'
+            }
+    
+            // Example AJAX code (modify as needed)
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/user_pswd_reset", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            console.log(response);
+    
+                            // Check for error message and display it
+                            if (response.message_type === 'error') {
+                                document.getElementById('error-message').textContent = response.message;
+                            } else {
+                                // Clear any previous error messages
+                                document.getElementById('error-message').textContent = '';
+    
+                                // Handle the JSON response (if needed)
+                                if (response.message_type === 'success') {
+                                    // Redirect after a successful password reset
+                                    window.location.href = "/redirect_page"; // Change to the actual URL
+                                }
+                            }
+                        } catch (error) {
+                            console.error("Error parsing JSON response:", error);
+                            // Handle non-JSON response (e.g., display an error message)
+                        }
+                    } else {
+                        console.error("Error in server response:", xhr.status, xhr.statusText);
+                        // Handle other HTTP status codes
+                    }
+                }
+            };
+    
+            // Build the form data string
+            var formData = 'username=' + encodeURIComponent('{{ username }}') +
+                        '&newPassword=' + encodeURIComponent(newPassword) +
+                        '&confirmPassword=' + encodeURIComponent(confirmPassword);
+    
+            xhr.send(formData);
+        }
+        function goBack() {
+            window.history.back();
+        }
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);
+            xhr.send();
+            window.location.href = '/login';
+        }
+    </script>  
+</body>
+</html>

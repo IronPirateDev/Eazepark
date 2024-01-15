@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-size: 20px;
+            background-color: #05162c;
+            color: #ffffff;
+            margin: 0;
+            position: relative;
+        }
+
+        .entry-box {
+            margin-top: 20px;
+        }
+
+        input,
+        select {
+            width: 300px;
+            padding: 10px;
+            font-size: 20px;
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border: 1px solid #1a1a1a;
+            border-radius: 40px;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #243d5e;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 10px;
+            position: absolute;
+            top: 10px;
+        }
+
+        button.back {
+            left: 10px;
+        }
+
+        button.logout {
+            right: 10px;
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+
+        .logo {
+            max-width: 30%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-size: 20px;
+            background-color: #05162c;
+            color: #ffffff;
+            margin: 0;
+            }
+
+            .entry-box {
+                margin-top: 20px;
+            }
+
+            input, select {
+                width: 300px;
+                padding: 10px;
+                font-weight: bold;
+                font-size: 20px;
+                text-align: center;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                border: 1px solid #1a1a1a;
+                border-radius: 40px;
+                box-sizing: border-box;
+                margin-top: 10px;
+            }
+
+            button {
+                background-color: #284365 ;
+                color: #ffffff;
+                border: none;
+                border-radius: 40px;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 20px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                margin: 10px;
+                margin-top: 20px;
+            }
+
+            button:hover {
+                background-color: #020c18;
+            }
+
+            .logo {
+                max-width: 100%;
+                height: auto;
+            }
+            label {
+                font-size: 24px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+        }
+
+        button.back,
+        button.logout {
+            background-color: #243d5e;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            position: absolute;
+            top: 10px;
+        }
+
+        button.back {
+            left: 10px;
+        }
+
+        button.logout {
+            right: 10px;
+        }
+
+        button.back:hover,
+        button.logout:hover {
+            background-color: #020c18;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img class="logo" src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Logo">
+    </div>
+    <div class="entry-box">
+        <button class="back" onclick="goBack()">Back</button>
+        <button class="logout" onclick="logout()">Logout</button>
+
+        <form action="/add_user" method="post">
+            <label for="username">Username</label><br>
+            <input type="text" id="username" name="username" required>
+            <br><br>
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" required>
+            <br><br>
+            <label for="admin_status">Admin Status</label><br>
+            <select id="admin_status" name="admin_status">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if added_username %}
+        <div style="color: {% if added_username %}green{% else %}red{% endif %}; margin-top: 20px;">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);
+            xhr.send();
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Result</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        /* Add your styling here */
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            overflow-x: auto;
+        }
+
+        th, td {
+            border: 1px solid #ffffff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #104386;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Report Result</h1>
+
+    <table id="dynamicTable">
+        <!-- Table headers will be added dynamically using JavaScript -->
+        <thead>
+            <tr>
+                <!-- Headers will be added dynamically -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be added dynamically -->
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Assume data is passed as a JSON object from Flask
+        var data = {{ data | tojson | safe }};
+
+        // Function to dynamically generate the table
+        function generateTable() {
+            var table = $('#dynamicTable');
+            var headers = Object.keys(data[0]);
+
+            // Add headers dynamically
+            var headerRow = '<tr>';
+            headers.forEach(function(header) {
+                headerRow += '<th>' + header + '</th>';
+            });
+            headerRow += '</tr>';
+            table.find('thead tr').html(headerRow);
+
+            // Add data rows dynamically
+            var bodyRows = '';
+            data.forEach(function(row) {
+                var dataRow = '<tr>';
+                headers.forEach(function(header) {
+                    dataRow += '<td>' + row[header] + '</td>';
+                });
+                dataRow += '</tr>';
+                bodyRows += dataRow;
+            });
+            table.find('tbody').html(bodyRows);
+        }
+
+        // Call the function when the page is ready
+        $(document).ready(function() {
+            generateTable();
+        });
+    </script>
+</body>
+</html>

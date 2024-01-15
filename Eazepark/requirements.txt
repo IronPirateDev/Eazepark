@@ -1,0 +1,8 @@
+opencv-python-headless
+pytesseract
+mysql-connector-python
+pyautogui
+selenium
+pygetwindow
+pytesseract
+qrcode

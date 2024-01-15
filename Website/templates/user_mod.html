@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List Control</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .option-buttons {
+            margin-bottom: 50px; /* Reduced bottom margin */
+        }
+
+        img {
+            max-width: 550px;
+            height: auto;
+            margin: 0px 0; /* Reduced top margin */
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #104386;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px; /* Reduced margin */
+        }
+
+        button:hover {
+            background-color: #010a17;
+        }
+        h1 {
+            font-size: 65px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+            }
+
+            .option-buttons {
+                margin-bottom: 50px; /* Reduced bottom margin */
+            }
+
+            img {
+                max-width: 390px;
+                height: auto;
+                margin: 0px 0; /* Reduced top margin */
+                margin-bottom: 10px;
+            }
+
+            button {
+                background-color: #104386;
+                color: #ffffff; /* Set text color to white */
+                border: none;
+                border-radius: 40px;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 30px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                margin: 20px; /* Reduced margin */
+            }
+
+            button:hover {
+                background-color: #010a17;
+            }
+            h1 {
+                font-size: 55px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            .fade-in {
+                opacity: 0;
+                animation: fadeIn 1s ease-in-out forwards;
+            }
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    <button onclick="goBack()" style="position: absolute; top: 10px; left: 10px;">Back</button>
+    <button onclick="logout()" style="position: absolute; top: 10px; right: 10px;">Logout</button>
+    <div class="option-buttons">
+        <h1>User List Control</h1>
+        <button onclick="sendOption('AU')">Add User</button>
+        <button onclick="sendOption('RU')">Remove User</button>
+        <button onclick="sendOption('CP')">Change Password</button>
+    </div>
+
+    <script>
+        function sendOption(option) {
+        var selop = option;  // Assign the selected option to selop
+        console.log("Selected Option:", selop); // Print selected option
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/process_option", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                    if (selop == 'AU') {
+                        window.location.href = '/add_user'; // Redirect to '/mdfy' route
+                    } 
+                    else if (selop == 'RU') {
+                        window.location.href = '/remove_user';
+                    }
+                    else if (selop == 'CP') {
+                        window.location.href = '/reset_password';
+                    }
+                    else {
+                        window.location.reload(); // Reload the current page
+                    }
+                }
+            }
+        };
+        xhr.send(JSON.stringify({option: option}));
+    }
+
+
+        window.onbeforeunload = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);  // Make a synchronous request
+            xhr.send();
+        }
+        function goBack() {
+            window.history.back();
+        }
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);
+            xhr.send();
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

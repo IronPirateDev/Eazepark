@@ -1,0 +1,86 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #333; /* Dark background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #444; /* Darker container color */
+    padding: 30px;
+    border-radius: 10px; /* Rounded corners for a softer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    transition: transform 0.3s ease; /* Added transition effect */
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 36px;
+    margin: 0;
+    color: #eee; /* Lighter text color for contrast */
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    background-color: transparent;
+    color: #ccc; /* Lighter text color for contrast */
+    outline: none;
+    transition: border-color 0.3s ease; /* Added transition effect */
+}
+
+label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #ccc; /* Lighter text color for contrast */
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+input:focus + label, input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 14px;
+    color: #a6e0c1; /* Lighter accent color for contrast */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #65a44c; /* Darker button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #b4febe;
+}
+
+.container:hover {
+    transform: translateY(-5px); /* Added hover effect for a slight lift */
+}

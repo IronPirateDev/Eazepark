@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Car</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-size: 50px;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .entry-box {
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 30px;
+        }
+        input[type="text"] {
+            width: 600px;
+            padding: 10px;
+            font-size: 25px;
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border: 1px solid #1a1a1a;
+            border-radius: 40px;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #243d5e;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 25px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px; /* Reduced margin */
+            margin-top: 50px;
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+
+        .image-container {
+            position: relative;
+            width: auto; /* Set the width of the container */
+            height: 300px; /* Set the height of the container */
+            overflow: hidden; /* Hide any overflow */
+        }
+
+        .image-container img {
+            width: 40%; /* Make the image fill the container */
+            top: 0;
+            left: 480px;
+        }
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #243d5e; /* Same color as your buttons */
+            color: #ffffff; /* Same text color as your buttons */
+            border: none;
+            border-radius: 200px; /* Same border radius as your buttons */
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 30px; /* Same font size as your buttons */
+            margin: 0; /* No margin */
+        }
+
+        #back-button:hover {
+            background-color: #020c18; /* Same hover color as your buttons */
+        }
+        @media (max-width: 768px) {
+            body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-size: 50px;
+            background-color: #05162c;
+            color: #ffffff; /* Set text color to white */
+            margin: 0;
+        }
+
+        .entry-box {
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            width: 360px;
+            padding: 10px;
+            font-size: 22px;
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border: 1px solid #1a1a1a;
+            border-radius: 40px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;   
+        }
+        button {
+            background-color: #243d5e;
+            color: #ffffff; /* Set text color to white */
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 25px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 20px; /* Reduced margin */
+            margin-top: -10px;
+        }
+
+        button:hover {
+            background-color: #020c18;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%; /* Set the width of the container */
+            height: 300px; /* Set the height of the container */
+            overflow: hidden; /* Hide any overflow */
+            margin-bottom: -120px;
+        }
+
+        .image-container img {
+            width: 100%; /* Make the image fill the container */
+            top: 0;
+            left: 480px;
+        }
+
+    }
+    </style>
+</head>
+<body>
+    <div id="popup" class="popup">
+        <span class="popuptext" id="popup-text">{{ message }}</span>
+    </div> 
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='ParkingIcon1.png') }}" alt="Your Image">
+    </div>
+    <button onclick="goBack()" style="position: absolute; top: 10px; left: 10px;">Back</button>
+    <button onclick="logout()" style="position: absolute; top: 10px; right: 10px;">Logout</button>
+    <div class="entry-box">
+        <form action="/modify_car" method="post">
+            <h1>Car Number Database Modification System</h1>                                             
+            <input type="text" id="car_number" name="car_number" placeholder="Enter the car number here" required>
+            <br>
+            <button type="submit" name="btnpr" value="add_car">Add this Car</button>
+            <button type="submit" name="btnpr" value="delete_car">Delete this Car</button>
+        </form>        
+    </div>
+    <script>
+        function showPopup(message) {
+            var popup = document.getElementById("popup");
+            var popupText = document.getElementById("popup-text");
+            popup.style.display = "block";
+            popupText.innerHTML = message;
+            setTimeout(function() {
+                popup.style.display = "none";
+            }, 3000); // Hide the popup after 3 seconds (adjust as needed)
+        }
+        function goBack() {
+            window.history.back();
+        }
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/logout", false);
+            xhr.send();
+            window.location.href = '/login';
+        }
+    </script>
+    
+</body>
+</html>
